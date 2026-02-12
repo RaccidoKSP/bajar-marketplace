@@ -3,8 +3,8 @@ node_modules/
 # package-lock.json - нужен для Railway
 
 # Uploaded files (optional - remove if you want to track uploads)
-uploads/*
-!uploads/.gitkeep
+# uploads/* - закомментировано чтобы загрузить файлы на Railway
+# !uploads/.gitkeep
 
 # Environment variables
 .env
@@ -12,7 +12,7 @@ uploads/*
 .env.production
 
 # Database (for production use real DB)
-database.json
+# database.json - закомментировано чтобы загрузить данные на Railway
 
 # Logs
 *.log
