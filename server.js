@@ -26,6 +26,9 @@ if (!fs.existsSync(UPLOAD_DIR)) {
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Serve static files (HTML, CSS, JS)
+app.use(express.static(__dirname));
 app.use('/uploads', express.static(UPLOAD_DIR));
 
 // Configure multer for file uploads
