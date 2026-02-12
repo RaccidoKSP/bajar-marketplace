@@ -1,6 +1,6 @@
 # Dependencies
 node_modules/
-package-lock.json
+# package-lock.json - нужен для Railway
 
 # Uploaded files (optional - remove if you want to track uploads)
 uploads/*
