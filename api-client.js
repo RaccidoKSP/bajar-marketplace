@@ -1,7 +1,7 @@
 // BAJAR - API Client for Server Communication
 // This module handles all communication with the backend server
 
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://web-production-6c469.up.railway.app/api';
 
 // API Client Object
 const APIClient = {
