@@ -90,6 +90,30 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', message: 'Server is running' });
 });
 
+// Debug endpoint - check uploads folder
+app.get('/api/debug/uploads', (req, res) => {
+    try {
+        const uploadsPath = path.join(__dirname, UPLOAD_DIR);
+        const exists = fs.existsSync(uploadsPath);
+        
+        let files = [];
+        if (exists) {
+            files = fs.readdirSync(uploadsPath);
+        }
+        
+        res.json({
+            uploadsPath: uploadsPath,
+            exists: exists,
+            filesCount: files.length,
+            firstFiles: files.slice(0, 10),
+            __dirname: __dirname,
+            UPLOAD_DIR: UPLOAD_DIR
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Get all items
 app.get('/api/items', (req, res) => {
     try {
