@@ -161,7 +161,7 @@ const APIClient = {
         
         // Remove leading slash if present
         const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
-        return `http://localhost:3000/${cleanPath}`;
+        return `https://web-production-6c469.up.railway.app/${cleanPath}`;
     }
 };
 
