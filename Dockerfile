@@ -13,8 +13,8 @@ RUN npm ci --only=production
 # Копируем остальные файлы приложения
 COPY . .
 
-# Создаем директорию для загрузок
-RUN mkdir -p uploads && chmod 755 uploads
+# Убеждаемся что папка uploads скопирована и имеет правильные права
+RUN chmod 755 uploads || mkdir -p uploads && chmod 755 uploads
 
 # Открываем порт
 EXPOSE 3000
