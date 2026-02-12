@@ -1,0 +1,43 @@
+# Apache configuration for BAJAR
+# Используется если вы деплоите на Apache сервер
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    
+    # Если запрашивается директория без trailing slash, добавляем его
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^(.+[^/])$ $1/ [R=301,L]
+    
+    # Разрешаем прямой доступ к статическим файлам
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+    
+    # Перенаправляем API запросы на Node.js сервер
+    RewriteRule ^api/(.*)$ http://localhost:3000/api/$1 [P,L]
+    RewriteRule ^uploads/(.*)$ http://localhost:3000/uploads/$1 [P,L]
+</IfModule>
+
+# Включаем сжатие
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+# Настройка кэширования
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+
+# Безопасность
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
