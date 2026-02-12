@@ -29,7 +29,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Serve static files (HTML, CSS, JS)
 app.use(express.static(__dirname));
-app.use('/uploads', express.static(UPLOAD_DIR));
+app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
 
 // Configure multer for file uploads
 
