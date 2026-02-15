@@ -426,6 +426,25 @@ function shuffleArray(array) {
     return shuffled;
 }
 
+// Create ad card for India Today
+function createAdCard() {
+    return {
+        id: 999,
+        title: "📰 India Today - ताजा समाचार और अपडेट",
+        category: "ad",
+        price: 0,
+        condition: "new",
+        description: "India Today के साथ सूचित रहें! नवीनतम समाचार, राजनीति, खेल, मनोरंजन और बहुत कुछ प्राप्त करें। India Today पर जाने के लिए क्लिक करें।",
+        location: "भारत",
+        seller: "India Today",
+        phone: "0000000000",
+        image: "📰",
+        isAd: true,
+        adUrl: "https://www.indiatoday.in/",
+        views: 9999
+    };
+}
+
 // Display items in the grid
 function displayItems(itemsToDisplay, animate = true) {
     itemsGrid.innerHTML = '';
@@ -439,10 +458,33 @@ function displayItems(itemsToDisplay, animate = true) {
 
     // Shuffle items before displaying to ensure random order on each page load
     const shuffledItems = shuffleArray(itemsToDisplay);
+    
+    // Insert ad cards every 8-12 items (less frequent)
+    const itemsWithAds = [];
+    let adCounter = 0;
+    
+    shuffledItems.forEach((item, index) => {
+        itemsWithAds.push(item);
+        
+        // Insert ad after every 8-12 items (random)
+        const nextAdPosition = 8 + Math.floor(Math.random() * 5); // 8, 9, 10, 11, or 12
+        if ((index + 1) % nextAdPosition === 0 && index < shuffledItems.length - 1) {
+            itemsWithAds.push(createAdCard());
+            adCounter++;
+        }
+    });
+    
+    // Add one ad only if there are more than 5 items and no ads were added
+    if (adCounter === 0 && shuffledItems.length > 5) {
+        const randomPosition = 3 + Math.floor(Math.random() * Math.min(5, shuffledItems.length - 3));
+        itemsWithAds.splice(randomPosition, 0, createAdCard());
+    }
+    
+    const finalItems = itemsWithAds;
 
     if (animate) {
         // Show items with sequential animation
-        shuffledItems.forEach((item, index) => {
+        finalItems.forEach((item, index) => {
             setTimeout(() => {
                 const itemCard = createItemCard(item);
                 // Random delay between 0.2s and 4s
@@ -451,7 +493,7 @@ function displayItems(itemsToDisplay, animate = true) {
                 itemsGrid.appendChild(itemCard);
                 
                 // Hide loading screen after last item
-                if (index === shuffledItems.length - 1) {
+                if (index === finalItems.length - 1) {
                     setTimeout(() => {
                         hideLoadingScreen();
                     }, randomDelay + 500);
@@ -459,7 +501,7 @@ function displayItems(itemsToDisplay, animate = true) {
             }, 50 * index);
         });
     } else {
-        shuffledItems.forEach(item => {
+        finalItems.forEach(item => {
             const itemCard = createItemCard(item);
             itemsGrid.appendChild(itemCard);
         });
@@ -505,7 +547,7 @@ function createItemCard(item) {
         : `<div class="item-image">${item.image}</div>`;
     
     card.innerHTML = `
-        <div onclick="showItemDetail(${item.id})" style="cursor: pointer;">
+        <div onclick="window.location.href='product.html?id=${item.id}'" style="cursor: pointer;">
             ${imageContent}
             <div class="item-details">
                 <h4 class="item-title">${item.title}</h4>

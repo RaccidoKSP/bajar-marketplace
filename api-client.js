@@ -1,10 +1,21 @@
 // BAJAR - API Client for Server Communication
 // This module handles all communication with the backend server
 
-const API_BASE_URL = 'https://web-production-6c469.up.railway.app/api';
+// Auto-detect environment: use localhost in development, Railway in production
+const isLocalhost = typeof window !== 'undefined' && 
+                    (window.location.hostname === 'localhost' || 
+                     window.location.hostname === '127.0.0.1');
+
+const API_BASE_URL = isLocalhost 
+    ? 'http://localhost:3000/api'
+    : 'https://web-production-6c469.up.railway.app/api';
+
+console.log('🔧 API Client initialized:', API_BASE_URL);
 
 // API Client Object
 const APIClient = {
+    baseURL: API_BASE_URL,
+    
     // Check if server is available
     async checkServerHealth() {
         try {
@@ -161,7 +172,13 @@ const APIClient = {
         
         // Remove leading slash if present
         const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
-        return `https://web-production-6c469.up.railway.app/${cleanPath}`;
+        
+        // Use the same base URL logic as API_BASE_URL
+        const baseUrl = isLocalhost 
+            ? 'http://localhost:3000'
+            : 'https://web-production-6c469.up.railway.app';
+        
+        return `${baseUrl}/${cleanPath}`;
     }
 };
 
