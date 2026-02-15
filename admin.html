@@ -25,6 +25,7 @@
                     <p class="tagline">विज्ञापन प्रबंधन</p>
                 </div>
                 <nav class="nav">
+                    <button class="btn-primary" id="adminPostAdBtn">+ नया विज्ञापन जोड़ें</button>
                     <button class="btn-secondary" onclick="window.location.href='index.html'">← वेबसाइट पर वापस जाएं</button>
                     <button class="btn-danger" id="clearAllBtn">🗑️ सभी हटाएं</button>
                 </nav>
@@ -187,7 +188,283 @@
         </div>
     </div>
 
+    <!-- Post Ad Modal (для админ-панели) -->
+    <div class="modal" id="postAdModal">
+        <div class="modal-content modal-large">
+            <span class="close-modal" onclick="document.getElementById('postAdModal').style.display='none'">&times;</span>
+            <h3>+ Добавить новое объявление</h3>
+            <form id="postAdForm">
+                <div class="form-group">
+                    <label for="itemTitle">वस्तु का शीर्षक * <span style="color: #FF6B35; font-size: 0.85em;">🌐 किसी भी भाषा में लिखें</span></label>
+                    <input type="text" id="itemTitle" required placeholder="Example: iPhone 13 Pro">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="itemCategory">श्रेणी *</label>
+                        <select id="itemCategory" required>
+                            <option value="">एक श्रेणी चुनें</option>
+                            <option value="electronics">इलेक्ट्रॉनिक्स</option>
+                            <option value="fashion">फैशन</option>
+                            <option value="vehicles">वाहन</option>
+                            <option value="real-estate">अचल संपत्ति</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="itemPrice">कीमत (₹) *</label>
+                        <input type="number" id="itemPrice" required placeholder="रुपये में">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="itemCondition">स्थिति *</label>
+                        <select id="itemCondition" required>
+                            <option value="">स्थिति चुनें</option>
+                            <option value="new">बिल्कुल नया</option>
+                            <option value="like-new">नए जैसा</option>
+                            <option value="good">अच्छा</option>
+                            <option value="fair">ठीक-ठाक</option>
+                            <option value="poor">पुर्जों के लिए</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="itemSize">आकार / आयाम *</label>
+                        <input type="text" id="itemSize" required placeholder="उदा., बड़ा, 42 इंच">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemDescription">विवरण * <span style="color: #FF6B35; font-size: 0.85em;">🌐 किसी भी भाषा में</span></label>
+                    <textarea id="itemDescription" required rows="5"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="itemLocation">स्थान * <span style="color: #FF6B35; font-size: 0.85em;">🌐 किसी भी भाषा में</span></label>
+                        <input type="text" id="itemLocation" required placeholder="Mumbai">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sellerName">विक्रेता का नाम *</label>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="sellerName" required placeholder="नाम" style="flex: 1;">
+                            <button type="button" onclick="autoFillSellerName()" class="btn-secondary" style="white-space: nowrap;">🎲 नया नाम</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sellerPhone">संपर्क नंबर *</label>
+                        <input type="tel" id="sellerPhone" required placeholder="+92 022 #####">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="itemViews">व्यूज की संख्या *</label>
+                        <input type="number" id="itemViews" min="0" value="0" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemImages">चित्र अपलोड करें (1-5 फोटो) *</label>
+                    <input type="file" id="itemImages" accept="image/*" multiple required>
+                    <small>अपनी वस्तु की 1 से 5 स्पष्ट तस्वीरें अपलोड करें</small>
+                    <div id="imagePreview" class="image-preview"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">विज्ञापन पोस्ट करें</button>
+                    <button type="button" class="btn-secondary" onclick="document.getElementById('postAdModal').style.display='none'">रद्द करें</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="api-client.js"></script>
+    <script src="translate-service.js"></script>
+    <script src="indian-names.js"></script>
+    
+    <!-- Подключаем функции из script.js для работы формы -->
+    <script>
+        // Копируем необходимые функции из script.js
+        
+        // Handle image preview
+        function handleImagePreview(e) {
+            const files = e.target.files;
+            const previewContainer = document.getElementById('imagePreview');
+            previewContainer.innerHTML = '';
+            
+            if (files.length > 5) {
+                alert('अधिकतम 5 फोटो! केवल पहले 5 का चयन किया गया।');
+            }
+            
+            const filesToShow = Math.min(files.length, 5);
+            
+            for (let i = 0; i < filesToShow; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const imgContainer = document.createElement('div');
+                    imgContainer.style.cssText = 'display: inline-block; margin: 5px; position: relative;';
+                    imgContainer.innerHTML = `
+                        <img src="${event.target.result}" alt="Preview ${i + 1}" style="max-width: 150px; max-height: 150px; border-radius: 8px; object-fit: cover; border: 2px solid #E0E0E0;">
+                        <div style="position: absolute; top: 5px; left: 5px; background: ${i === 0 ? '#FF6B35' : '#27AE60'}; color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold;">
+                            ${i === 0 ? 'मुख्य' : `फोटो ${i + 1}`}
+                        </div>
+                    `;
+                    previewContainer.appendChild(imgContainer);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: #27AE60;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+                z-index: 3000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Handle post ad form submission
+        async function handlePostAd(e) {
+            e.preventDefault();
+            
+            showNotification('विज्ञापन अपलोड हो रहा है... कृपया प्रतीक्षा करें ⏳');
+            
+            try {
+                const title = document.getElementById('itemTitle').value;
+                const description = document.getElementById('itemDescription').value;
+                const location = document.getElementById('itemLocation').value;
+                const seller = document.getElementById('sellerName').value;
+                
+                showNotification('पाठ का हिंदी में अनुवाद हो रहा है... ⏳');
+                
+                const [translatedTitle, translatedDescription, translatedLocation, translatedSeller] = await Promise.all([
+                    TranslationService.translateToHindi(title),
+                    TranslationService.translateToHindi(description),
+                    TranslationService.translateToHindi(location),
+                    TranslationService.translateToHindi(seller)
+                ]);
+                
+                showNotification('चित्र अपलोड हो रहे हैं... ⏳');
+                
+                const imageFiles = document.getElementById('itemImages').files;
+                let imageUrls = [];
+                
+                if (imageFiles.length > 0) {
+                    const filesToProcess = Math.min(imageFiles.length, 5);
+                    const filesToUpload = Array.from(imageFiles).slice(0, filesToProcess);
+                    
+                    try {
+                        imageUrls = await APIClient.uploadImages(filesToUpload);
+                    } catch (error) {
+                        console.error('Error uploading images:', error);
+                        showNotification('चित्र अपलोड करने में त्रुटि। कृपया पुनः प्रयास करें।');
+                        return;
+                    }
+                } else {
+                    const category = document.getElementById('itemCategory').value;
+                    const icons = {
+                        'electronics': '📱',
+                        'fashion': '👗',
+                        'vehicles': '🚗',
+                        'real-estate': '🏘️'
+                    };
+                    imageUrls.push(icons[category] || '📦');
+                }
+                
+                const newItemData = {
+                    title: translatedTitle,
+                    category: document.getElementById('itemCategory').value,
+                    price: parseInt(document.getElementById('itemPrice').value),
+                    condition: document.getElementById('itemCondition').value,
+                    size: document.getElementById('itemSize').value,
+                    description: translatedDescription,
+                    location: translatedLocation,
+                    seller: translatedSeller,
+                    phone: document.getElementById('sellerPhone').value,
+                    views: parseInt(document.getElementById('itemViews').value) || 0,
+                    image: imageUrls[0],
+                    imageFiles: imageUrls,
+                    originalTitle: title,
+                    originalDescription: description,
+                    originalLocation: location,
+                    originalSeller: seller
+                };
+                
+                const newItem = await APIClient.createItem(newItemData);
+                
+                document.getElementById('postAdModal').style.display = 'none';
+                document.getElementById('postAdForm').reset();
+                document.getElementById('imagePreview').innerHTML = '';
+                
+                showNotification('आपका विज्ञापन सफलतापूर्वक पोस्ट किया गया! 🎉');
+                
+                // Reload ads in admin panel
+                if (typeof loadAds === 'function') {
+                    setTimeout(() => loadAds(), 1000);
+                }
+                
+            } catch (error) {
+                console.error('Error creating item:', error);
+                showNotification('विज्ञापन पोस्ट करने में त्रुटि। कृपया पुनः प्रयास करें।');
+            }
+        }
+        
+        // Setup event listeners when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Post Ad Button
+            document.getElementById('adminPostAdBtn').addEventListener('click', () => {
+                document.getElementById('postAdModal').style.display = 'block';
+                
+                const phoneInput = document.getElementById('sellerPhone');
+                if (!phoneInput.value) {
+                    phoneInput.value = '+92 022 #####';
+                }
+                
+                const locationInput = document.getElementById('itemLocation');
+                if (!locationInput.value) {
+                    const indianCities = ['Mumbai', 'Delhi', 'Bangalore', 'Kolkata', 'Chennai', 'Hyderabad', 'Pune'];
+                    const randomCity = Math.random() < 0.8 ? 'Mumbai' : indianCities[Math.floor(Math.random() * indianCities.length)];
+                    locationInput.value = randomCity;
+                }
+                
+                if (typeof autoFillSellerName === 'function') {
+                    autoFillSellerName();
+                }
+            });
+            
+            // Form submit
+            document.getElementById('postAdForm').addEventListener('submit', handlePostAd);
+            
+            // Image preview
+            const imageInput = document.getElementById('itemImages');
+            if (imageInput) {
+                imageInput.addEventListener('change', handleImagePreview);
+            }
+        });
+    </script>
+    
     <script src="admin.js"></script>
 </body>
 </html>

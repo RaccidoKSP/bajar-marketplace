@@ -232,6 +232,11 @@ async function loadItemsFromServer() {
 
 // Setup event listeners
 function setupEventListeners() {
+    // Post Ad Button
+    postAdBtn.addEventListener('click', () => {
+        alert('आपने अपना भारतीय पासपोर्ट सत्यापित नहीं किया है।');
+    });
+
     // Login Button
     loginBtn.addEventListener('click', () => {
         alert('आपने अपना भारतीय पासपोर्ट सत्यापित नहीं किया है।');
