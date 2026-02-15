@@ -31,6 +31,11 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(__dirname));
 app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
 
+// Admin panel route (protected)
+app.get('/adminpanel22', (req, res) => {
+    res.sendFile(path.join(__dirname, 'adminpanel22.html'));
+});
+
 // Configure multer for file uploads
 
 const storage = multer.diskStorage({

@@ -232,30 +232,9 @@ async function loadItemsFromServer() {
 
 // Setup event listeners
 function setupEventListeners() {
-    // Post Ad Button
-    postAdBtn.addEventListener('click', () => {
-        postAdModal.style.display = 'block';
-        // Auto-fill phone number with +92 022 #####
-        const phoneInput = document.getElementById('sellerPhone');
-        if (!phoneInput.value) {
-            phoneInput.value = '+92 022 #####';
-        }
-        // Auto-fill location with Mumbai or other Indian cities
-        const locationInput = document.getElementById('itemLocation');
-        if (!locationInput.value) {
-            // Array of Indian cities to randomly choose from
-            const indianCities = ['Mumbai', 'Delhi', 'Bangalore', 'Kolkata', 'Chennai', 'Hyderabad', 'Pune', 'Ahmedabad', 'Jaipur'];
-            // Use Mumbai most of the time (80% chance), other cities 20%
-            const randomCity = Math.random() < 0.8 ? 'Mumbai' : indianCities[Math.floor(Math.random() * indianCities.length)];
-            locationInput.value = randomCity;
-        }
-        // Auto-fill seller name with random Indian name in Hindi
-        autoFillSellerName();
-    });
-
     // Login Button
     loginBtn.addEventListener('click', () => {
-        alert('लॉगिन करने के लिए, कृपया अपने भारतीय पासपोर्ट की फोटो संलग्न करें।');
+        alert('आपने अपना भारतीय पासपोर्ट सत्यापित नहीं किया है।');
     });
 
     // Close modals
