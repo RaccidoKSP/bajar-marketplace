@@ -33,7 +33,7 @@ app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
 
 // Admin panel route (protected)
 app.get('/adminpanel22', (req, res) => {
-    res.sendFile(path.join(__dirname, 'adminpanel22.html'));
+    res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
 // Configure multer for file uploads
