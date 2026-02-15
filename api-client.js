@@ -8,7 +8,7 @@ const isLocalhost = typeof window !== 'undefined' &&
 
 const API_BASE_URL = isLocalhost 
     ? 'http://localhost:3000/api'
-    : 'https://web-production-6c469.up.railway.app/api';
+    : 'https://bajar-marketplace.up.railway.app/api';
 
 console.log('🔧 API Client initialized:', API_BASE_URL);
 
@@ -176,7 +176,7 @@ const APIClient = {
         // Use the same base URL logic as API_BASE_URL
         const baseUrl = isLocalhost 
             ? 'http://localhost:3000'
-            : 'https://web-production-6c469.up.railway.app';
+            : 'https://bajar-marketplace.up.railway.app';
         
         return `${baseUrl}/${cleanPath}`;
     }
