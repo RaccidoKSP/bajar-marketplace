@@ -10,12 +10,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Configure upload settings
-const UPLOAD_DIR = path.join(__dirname, process.env.UPLOAD_DIR || 'uploads');
+const UPLOAD_DIR = process.env.UPLOAD_DIR || 'uploads';
 const MAX_FILE_SIZE = parseInt(process.env.MAX_FILE_SIZE) || 10 * 1024 * 1024; // 10MB default
 const MAX_FILES = parseInt(process.env.MAX_FILES) || 5;
 
 // Database file path
-const DB_FILE = path.join(__dirname, process.env.DB_FILE || 'database.json');
+const DB_FILE = process.env.DB_FILE || 'database.json';
 
 // Ensure uploads directory exists
 if (!fs.existsSync(UPLOAD_DIR)) {
@@ -26,14 +26,21 @@ if (!fs.existsSync(UPLOAD_DIR)) {
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
-app.use('/uploads', express.static(UPLOAD_DIR));
-app.use(express.static(path.join(__dirname)));
+
+// Serve static files (HTML, CSS, JS)
+app.use(express.static(__dirname));
+app.use('/uploads', express.static(path.join(__dirname, UPLOAD_DIR)));
+
+// Admin panel route (protected)
+app.get('/adminpanel22', (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin.html'));
+});
 
 // Configure multer for file uploads
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, UPLOAD_DIR);
+        cb(null, UPLOAD_DIR + '/');
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -86,6 +93,30 @@ function saveDatabase(data) {
 // Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', message: 'Server is running' });
+});
+
+// Debug endpoint - check uploads folder
+app.get('/api/debug/uploads', (req, res) => {
+    try {
+        const uploadsPath = path.join(__dirname, UPLOAD_DIR);
+        const exists = fs.existsSync(uploadsPath);
+        
+        let files = [];
+        if (exists) {
+            files = fs.readdirSync(uploadsPath);
+        }
+        
+        res.json({
+            uploadsPath: uploadsPath,
+            exists: exists,
+            filesCount: files.length,
+            firstFiles: files.slice(0, 10),
+            __dirname: __dirname,
+            UPLOAD_DIR: UPLOAD_DIR
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
 
 // Get all items
@@ -270,5 +301,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
     console.log(`🚀 BAJAR Server running on http://localhost:${PORT}`);
     console.log(`📁 Uploads folder: ${path.join(__dirname, 'uploads')}`);
-    console.log(`💾 Database file: ${DB_FILE}`);
+    console.log(`💾 Database file: ${path.join(__dirname, DB_FILE)}`);
 });

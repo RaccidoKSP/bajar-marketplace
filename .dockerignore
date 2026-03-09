@@ -4,9 +4,7 @@ npm-debug.log
 .env.local
 .git
 .gitignore
-README.md
-*.md
 .vscode
 .idea
-uploads/*
-!uploads/.gitkeep
+# uploads/* - НЕ игнорировать, нужны для Railway
+# !uploads/.gitkeep

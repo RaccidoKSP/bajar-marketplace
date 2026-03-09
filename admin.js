@@ -3,11 +3,11 @@
 let items = [];
 let filteredItems = [];
 let itemToDelete = null;
-let activeCategory = '';
 
 // DOM Elements
 const adsTableBody = document.getElementById('adsTableBody');
 const adminSearch = document.getElementById('adminSearch');
+const categoryFilter = document.getElementById('categoryFilter');
 const sortBy = document.getElementById('sortBy');
 const clearAllBtn = document.getElementById('clearAllBtn');
 const generateItemsBtn = document.getElementById('generateItemsBtn');
@@ -27,8 +27,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadItems();
     displayItems();
     updateStats();
-    // Auto-fill phone on create modal open
-    document.getElementById('createPhone').value = '+92 022 #####';
 });
 
 // Load items from server
@@ -54,17 +52,8 @@ async function loadItems() {
 // Setup event listeners
 function setupEventListeners() {
     adminSearch.addEventListener('input', handleFilter);
+    categoryFilter.addEventListener('change', handleFilter);
     sortBy.addEventListener('change', handleSort);
-
-    // Category tabs
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            activeCategory = btn.dataset.category;
-            handleFilter();
-        });
-    });
     clearAllBtn.addEventListener('click', handleClearAll);
     confirmDeleteBtn.addEventListener('click', confirmDelete);
     cancelDeleteBtn.addEventListener('click', closeModal);
@@ -82,15 +71,6 @@ function setupEventListeners() {
             closeEditModal();
         }
     });
-
-    // Create modal
-    document.getElementById('createItemBtn').addEventListener('click', openCreateModal);
-    document.getElementById('createItemForm').addEventListener('submit', handleCreateSubmit);
-    document.getElementById('createModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('createModal')) closeCreateModal();
-    });
-    document.getElementById('translateAllBtn').addEventListener('click', translateAllFields);
-    document.getElementById('createImages').addEventListener('change', handleCreateImagePreview);
 }
 
 // Display items in table
@@ -195,19 +175,19 @@ function formatDate(dateString) {
 // Handle filter
 function handleFilter() {
     const searchTerm = adminSearch.value.toLowerCase();
-
+    const category = categoryFilter.value;
+    
     filteredItems = items.filter(item => {
-        const matchesSearch = !searchTerm ||
-                            item.title.toLowerCase().includes(searchTerm) ||
+        const matchesSearch = item.title.toLowerCase().includes(searchTerm) ||
                             item.description.toLowerCase().includes(searchTerm) ||
                             item.location.toLowerCase().includes(searchTerm) ||
                             item.seller.toLowerCase().includes(searchTerm);
-
-        const matchesCategory = !activeCategory || item.category === activeCategory;
-
+        
+        const matchesCategory = !category || item.category === category;
+        
         return matchesSearch && matchesCategory;
     });
-
+    
     handleSort();
 }
 
@@ -303,26 +283,15 @@ function closeModal() {
 // Update stats
 function updateStats() {
     totalAdsEl.textContent = items.length;
-
+    
     // Count today's ads
     const today = new Date().toISOString().split('T')[0];
     const todayAds = items.filter(item => item.datePosted === today).length;
     todayAdsEl.textContent = todayAds;
-
+    
     // Count unique categories
     const categories = new Set(items.map(item => item.category));
     categoriesCountEl.textContent = categories.size;
-
-    // Update tab counters
-    const counts = { '': items.length };
-    ['electronics', 'fashion', 'vehicles', 'real-estate'].forEach(cat => {
-        counts[cat] = items.filter(i => i.category === cat).length;
-    });
-    document.getElementById('count-all').textContent = counts[''];
-    document.getElementById('count-electronics').textContent = counts['electronics'];
-    document.getElementById('count-fashion').textContent = counts['fashion'];
-    document.getElementById('count-vehicles').textContent = counts['vehicles'];
-    document.getElementById('count-real-estate').textContent = counts['real-estate'];
 }
 
 // Show notification
@@ -417,148 +386,6 @@ async function handleEditSubmit(e) {
 function closeEditModal() {
     editModal.classList.remove('active');
     editItemForm.reset();
-}
-
-// ===== CREATE MODAL =====
-
-function openCreateModal() {
-    document.getElementById('createModal').classList.add('active');
-    fillRandomName();
-}
-
-function closeCreateModal() {
-    document.getElementById('createModal').classList.remove('active');
-    document.getElementById('createItemForm').reset();
-    document.getElementById('createImagePreview').innerHTML = '';
-}
-
-function fillRandomName() {
-    const el = document.getElementById('createSeller');
-    el.value = getRandomIndianName();
-    el.style.transition = 'background-color 0.5s';
-    el.style.backgroundColor = '#fff3cd';
-    setTimeout(() => el.style.backgroundColor = '', 800);
-}
-
-// Translate a single field to Hindi
-async function translateField(fieldId, btn) {
-    const el = document.getElementById(fieldId);
-    const text = el.value.trim();
-    if (!text) return;
-
-    const original = btn.textContent;
-    btn.textContent = '⏳';
-    btn.disabled = true;
-    el.disabled = true;
-
-    try {
-        const translated = await TranslationService.translateToHindi(text);
-        el.value = translated;
-        el.style.backgroundColor = '#e8f5e9';
-        setTimeout(() => el.style.backgroundColor = '', 1000);
-    } catch (e) {
-        showNotification('अनुवाद त्रुटि', 'error');
-    } finally {
-        btn.textContent = original;
-        btn.disabled = false;
-        el.disabled = false;
-    }
-}
-
-// Translate all text fields at once
-async function translateAllFields() {
-    const allBtn = document.getElementById('translateAllBtn');
-    allBtn.textContent = '⏳ अनुवाद हो रहा है...';
-    allBtn.disabled = true;
-
-    const fields = ['createTitle', 'createDescription', 'createLocation', 'createSeller'];
-    try {
-        await Promise.all(fields.map(id => {
-            const el = document.getElementById(id);
-            const text = el.value.trim();
-            if (!text) return Promise.resolve();
-            return TranslationService.translateToHindi(text).then(translated => {
-                el.value = translated;
-                el.style.backgroundColor = '#e8f5e9';
-                setTimeout(() => el.style.backgroundColor = '', 1000);
-            });
-        }));
-        showNotification('सभी फ़ील्ड का अनुवाद हो गया! ✅', 'success');
-    } catch (e) {
-        showNotification('अनुवाद त्रुटि', 'error');
-    } finally {
-        allBtn.textContent = '🌐 सभी को हिंदी में अनुवाद करें';
-        allBtn.disabled = false;
-    }
-}
-
-// Image preview for create form
-function handleCreateImagePreview(e) {
-    const preview = document.getElementById('createImagePreview');
-    preview.innerHTML = '';
-    const files = Array.from(e.target.files).slice(0, 5);
-    files.forEach((file, i) => {
-        const reader = new FileReader();
-        reader.onload = ev => {
-            const wrap = document.createElement('div');
-            wrap.style.cssText = 'display:inline-block;margin:4px;position:relative;';
-            wrap.innerHTML = `
-                <img src="${ev.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid #E0E0E0;">
-                <div style="position:absolute;top:3px;left:3px;background:${i===0?'#FF6B35':'#27AE60'};color:white;padding:1px 6px;border-radius:10px;font-size:0.7rem;font-weight:700;">${i===0?'Main':`${i+1}`}</div>
-            `;
-            preview.appendChild(wrap);
-        };
-        reader.readAsDataURL(file);
-    });
-}
-
-// Handle create form submit
-async function handleCreateSubmit(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('[type="submit"]');
-    btn.textContent = '⏳ अपलोड हो रहा है...';
-    btn.disabled = true;
-
-    try {
-        // Upload images
-        const imageFiles = document.getElementById('createImages').files;
-        let imageUrls = [];
-
-        if (imageFiles.length > 0) {
-            imageUrls = await APIClient.uploadImages(Array.from(imageFiles).slice(0, 5));
-        } else {
-            const icons = { electronics:'📱', fashion:'👗', vehicles:'🚗', 'real-estate':'🏘️' };
-            imageUrls.push(icons[document.getElementById('createCategory').value] || '📦');
-        }
-
-        const itemData = {
-            title: document.getElementById('createTitle').value,
-            category: document.getElementById('createCategory').value,
-            price: parseInt(document.getElementById('createPrice').value),
-            condition: document.getElementById('createCondition').value,
-            size: document.getElementById('createSize').value,
-            description: document.getElementById('createDescription').value,
-            location: document.getElementById('createLocation').value,
-            seller: document.getElementById('createSeller').value,
-            phone: document.getElementById('createPhone').value,
-            views: parseInt(document.getElementById('createViews').value) || 0,
-            image: imageUrls[0],
-            imageFiles: imageUrls
-        };
-
-        await APIClient.createItem(itemData);
-        await loadItems();
-        handleFilter();
-        updateStats();
-        closeCreateModal();
-        showNotification('विज्ञापन सफलतापूर्वक बनाया गया! 🎉', 'success');
-    } catch (err) {
-        console.error(err);
-        showNotification('त्रुटि: ' + err.message, 'error');
-    } finally {
-        btn.textContent = '✅ विज्ञापन प्रकाशित करें';
-        btn.disabled = false;
-    }
 }
 
 // Add CSS animations
