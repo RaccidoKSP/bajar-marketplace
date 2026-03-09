@@ -2,9 +2,8 @@
 node_modules/
 package-lock.json
 
-# Uploaded files (optional - remove if you want to track uploads)
-uploads/*
-!uploads/.gitkeep
+# Uploaded files - tracked to preserve photos on Railway
+# uploads/*
 
 # Environment variables
 .env
