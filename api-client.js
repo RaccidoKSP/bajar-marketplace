@@ -169,16 +169,9 @@ const APIClient = {
         if (!imagePath) return '';
         if (imagePath.startsWith('http')) return imagePath;
         if (imagePath.startsWith('data:')) return imagePath; // Base64 image
-        
-        // Remove leading slash if present
-        const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
-        
-        // Use the same base URL logic as API_BASE_URL
-        const baseUrl = isLocalhost 
-            ? 'http://localhost:3000'
-            : 'https://bajar-marketplace.up.railway.app';
-        
-        return `${baseUrl}/${cleanPath}`;
+
+        // Use relative path — works on any domain (Railway, localhost, etc.)
+        return imagePath.startsWith('/') ? imagePath : `/${imagePath}`;
     }
 };
 
