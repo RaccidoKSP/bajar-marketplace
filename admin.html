@@ -20,6 +20,7 @@
                 </div>
                 <nav class="nav">
                     <button class="btn-secondary" onclick="window.location.href='index.html'">← वेबसाइट पर वापस जाएं</button>
+                    <button class="btn-create" id="createItemBtn">+ नया विज्ञापन</button>
                     <button class="btn-danger" id="clearAllBtn">🗑️ सभी हटाएं</button>
                 </nav>
             </div>
@@ -181,7 +182,114 @@
         </div>
     </div>
 
+    <!-- Create Item Modal -->
+    <div class="modal" id="createModal">
+        <div class="modal-content modal-large">
+            <span class="close-modal" onclick="closeCreateModal()">&times;</span>
+            <h3>➕ नया विज्ञापन बनाएं</h3>
+            <div class="translate-all-bar">
+                <button type="button" class="btn-translate-all" id="translateAllBtn">🌐 सभी को हिंदी में अनुवाद करें</button>
+                <span class="translate-hint">रूसी / अंग्रेज़ी → हिंदी</span>
+            </div>
+            <form id="createItemForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="createTitle">शीर्षक *</label>
+                        <div class="input-with-btn">
+                            <input type="text" id="createTitle" required placeholder="Например: iPhone 13 Pro / Айфон 13">
+                            <button type="button" class="btn-translate-field" onclick="translateField('createTitle')">🌐</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="createCategory">श्रेणी *</label>
+                        <select id="createCategory" required>
+                            <option value="">— चुनें —</option>
+                            <option value="electronics">📱 इलेक्ट्रॉनिक्स</option>
+                            <option value="fashion">👗 फैशन</option>
+                            <option value="vehicles">🚗 वाहन</option>
+                            <option value="real-estate">🏘️ अचल संपत्ति</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="createPrice">कीमत (₹) *</label>
+                        <input type="number" id="createPrice" required placeholder="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="createCondition">स्थिति *</label>
+                        <select id="createCondition" required>
+                            <option value="new">बिल्कुल नया</option>
+                            <option value="like-new">नए जैसा</option>
+                            <option value="good">अच्छा</option>
+                            <option value="fair">ठीक-ठाक</option>
+                            <option value="poor">पुर्जों के लिए</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="createSize">आकार / आयाम</label>
+                        <input type="text" id="createSize" placeholder="उदा., बड़ा, 42 इंच, 500ml">
+                    </div>
+                    <div class="form-group">
+                        <label for="createViews">व्यूज</label>
+                        <input type="number" id="createViews" min="0" value="0">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="createDescription">विवरण *</label>
+                    <div class="input-with-btn textarea-with-btn">
+                        <textarea id="createDescription" rows="4" required placeholder="Описание товара на любом языке..."></textarea>
+                        <button type="button" class="btn-translate-field" onclick="translateField('createDescription')">🌐</button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="createLocation">स्थान *</label>
+                        <div class="input-with-btn">
+                            <input type="text" id="createLocation" required placeholder="Москва / Mumbai">
+                            <button type="button" class="btn-translate-field" onclick="translateField('createLocation')">🌐</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="createSeller">विक्रेता *</label>
+                        <div class="input-with-btn">
+                            <input type="text" id="createSeller" required placeholder="Иван Петров / John Smith">
+                            <button type="button" class="btn-translate-field" onclick="translateField('createSeller')">🌐</button>
+                            <button type="button" class="btn-random-name" onclick="fillRandomName()" title="Случайное индийское имя">🎲</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="createPhone">फोन *</label>
+                        <input type="tel" id="createPhone" required placeholder="+7 999 999 99 99">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="createImages">चित्र अपलोड करें (1–5 फोटो) *</label>
+                    <input type="file" id="createImages" accept="image/*" multiple required>
+                    <div id="createImagePreview" class="image-preview-admin"></div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">✅ विज्ञापन प्रकाशित करें</button>
+                    <button type="button" class="btn-secondary btn-secondary-dark" onclick="closeCreateModal()">रद्द करें</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="api-client.js"></script>
+    <script src="translate-service.js"></script>
+    <script src="indian-names.js"></script>
     <script src="admin.js"></script>
 </body>
 </html>

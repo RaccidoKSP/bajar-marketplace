@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadItems();
     displayItems();
     updateStats();
+    // Auto-fill phone on create modal open
+    document.getElementById('createPhone').value = '+92 022 #####';
 });
 
 // Load items from server
@@ -80,6 +82,15 @@ function setupEventListeners() {
             closeEditModal();
         }
     });
+
+    // Create modal
+    document.getElementById('createItemBtn').addEventListener('click', openCreateModal);
+    document.getElementById('createItemForm').addEventListener('submit', handleCreateSubmit);
+    document.getElementById('createModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('createModal')) closeCreateModal();
+    });
+    document.getElementById('translateAllBtn').addEventListener('click', translateAllFields);
+    document.getElementById('createImages').addEventListener('change', handleCreateImagePreview);
 }
 
 // Display items in table
@@ -406,6 +417,140 @@ async function handleEditSubmit(e) {
 function closeEditModal() {
     editModal.classList.remove('active');
     editItemForm.reset();
+}
+
+// ===== CREATE MODAL =====
+
+function openCreateModal() {
+    document.getElementById('createModal').classList.add('active');
+    fillRandomName();
+}
+
+function closeCreateModal() {
+    document.getElementById('createModal').classList.remove('active');
+    document.getElementById('createItemForm').reset();
+    document.getElementById('createImagePreview').innerHTML = '';
+}
+
+function fillRandomName() {
+    const el = document.getElementById('createSeller');
+    el.value = getRandomIndianName();
+    el.style.transition = 'background-color 0.5s';
+    el.style.backgroundColor = '#fff3cd';
+    setTimeout(() => el.style.backgroundColor = '', 800);
+}
+
+// Translate a single field to Hindi
+async function translateField(fieldId) {
+    const el = document.getElementById(fieldId);
+    const text = el.value.trim();
+    if (!text) return;
+
+    const btn = el.parentElement.querySelector('.btn-translate-field');
+    const original = btn.textContent;
+    btn.textContent = '⏳';
+    btn.disabled = true;
+    el.style.opacity = '0.5';
+
+    try {
+        const translated = await TranslationService.translateToHindi(text);
+        el.value = translated;
+        el.style.backgroundColor = '#e8f5e9';
+        setTimeout(() => el.style.backgroundColor = '', 1000);
+    } catch (e) {
+        showNotification('अनुवाद त्रुटि', 'error');
+    } finally {
+        btn.textContent = original;
+        btn.disabled = false;
+        el.style.opacity = '1';
+    }
+}
+
+// Translate all text fields at once
+async function translateAllFields() {
+    const btn = document.getElementById('translateAllBtn');
+    btn.textContent = '⏳ अनुवाद हो रहा है...';
+    btn.disabled = true;
+
+    const fields = ['createTitle', 'createDescription', 'createLocation', 'createSeller'];
+    try {
+        await Promise.all(fields.map(id => translateField(id)));
+        showNotification('सभी फ़ील्ड का अनुवाद हो गया! ✅', 'success');
+    } catch (e) {
+        showNotification('अनुवाद त्रुटि', 'error');
+    } finally {
+        btn.textContent = '🌐 सभी को हिंदी में अनुवाद करें';
+        btn.disabled = false;
+    }
+}
+
+// Image preview for create form
+function handleCreateImagePreview(e) {
+    const preview = document.getElementById('createImagePreview');
+    preview.innerHTML = '';
+    const files = Array.from(e.target.files).slice(0, 5);
+    files.forEach((file, i) => {
+        const reader = new FileReader();
+        reader.onload = ev => {
+            const wrap = document.createElement('div');
+            wrap.style.cssText = 'display:inline-block;margin:4px;position:relative;';
+            wrap.innerHTML = `
+                <img src="${ev.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:8px;border:2px solid #E0E0E0;">
+                <div style="position:absolute;top:3px;left:3px;background:${i===0?'#FF6B35':'#27AE60'};color:white;padding:1px 6px;border-radius:10px;font-size:0.7rem;font-weight:700;">${i===0?'Main':`${i+1}`}</div>
+            `;
+            preview.appendChild(wrap);
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// Handle create form submit
+async function handleCreateSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('[type="submit"]');
+    btn.textContent = '⏳ अपलोड हो रहा है...';
+    btn.disabled = true;
+
+    try {
+        // Upload images
+        const imageFiles = document.getElementById('createImages').files;
+        let imageUrls = [];
+
+        if (imageFiles.length > 0) {
+            imageUrls = await APIClient.uploadImages(Array.from(imageFiles).slice(0, 5));
+        } else {
+            const icons = { electronics:'📱', fashion:'👗', vehicles:'🚗', 'real-estate':'🏘️' };
+            imageUrls.push(icons[document.getElementById('createCategory').value] || '📦');
+        }
+
+        const itemData = {
+            title: document.getElementById('createTitle').value,
+            category: document.getElementById('createCategory').value,
+            price: parseInt(document.getElementById('createPrice').value),
+            condition: document.getElementById('createCondition').value,
+            size: document.getElementById('createSize').value,
+            description: document.getElementById('createDescription').value,
+            location: document.getElementById('createLocation').value,
+            seller: document.getElementById('createSeller').value,
+            phone: document.getElementById('createPhone').value,
+            views: parseInt(document.getElementById('createViews').value) || 0,
+            image: imageUrls[0],
+            imageFiles: imageUrls
+        };
+
+        await APIClient.createItem(itemData);
+        await loadItems();
+        handleFilter();
+        updateStats();
+        closeCreateModal();
+        showNotification('विज्ञापन सफलतापूर्वक बनाया गया! 🎉', 'success');
+    } catch (err) {
+        console.error(err);
+        showNotification('त्रुटि: ' + err.message, 'error');
+    } finally {
+        btn.textContent = '✅ विज्ञापन प्रकाशित करें';
+        btn.disabled = false;
+    }
 }
 
 // Add CSS animations
