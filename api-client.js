@@ -1,16 +1,7 @@
 // BAJAR - API Client for Server Communication
 // This module handles all communication with the backend server
 
-// Auto-detect environment: use localhost in development, Railway in production
-const isLocalhost = typeof window !== 'undefined' && 
-                    (window.location.hostname === 'localhost' || 
-                     window.location.hostname === '127.0.0.1');
-
-const API_BASE_URL = isLocalhost 
-    ? 'http://localhost:3000/api'
-    : 'https://bajar-marketplace.up.railway.app/api';
-
-console.log('🔧 API Client initialized:', API_BASE_URL);
+const API_BASE_URL = '/api';
 
 // API Client Object
 const APIClient = {
