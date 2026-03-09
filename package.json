@@ -1,0 +1,35 @@
+{
+  "name": "bajar-marketplace",
+  "version": "1.0.0",
+  "description": "BAJAR - Indian Resale Marketplace with Image Upload",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "health-check": "node health-check.js",
+    "prestart": "node health-check.js"
+  },
+  "keywords": [
+    "marketplace",
+    "resale",
+    "india",
+    "ecommerce"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.13.4",
+    "cheerio": "^1.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}

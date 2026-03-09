@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>एडमिन पैनल - BAJAR</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🛒 BAJAR एडमिन पैनल</h1>
+                    <p class="tagline">विज्ञापन प्रबंधन</p>
+                </div>
+                <nav class="nav">
+                    <button class="btn-secondary" onclick="window.location.href='index.html'">← वेबसाइट पर वापस जाएं</button>
+                    <button class="btn-danger" id="clearAllBtn">🗑️ सभी हटाएं</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Content -->
+    <section class="admin-content">
+        <div class="container">
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalAds">0</div>
+                    <div class="stat-label">कुल विज्ञापन</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="todayAds">0</div>
+                    <div class="stat-label">आज जोड़े गए</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="categoriesCount">0</div>
+                    <div class="stat-label">श्रेणियां</div>
+                </div>
+            </div>
+
+            <div class="admin-controls">
+                <div class="search-filter">
+                    <input type="text" id="adminSearch" class="admin-search" placeholder="🔍 विज्ञापनों में खोजें...">
+                    <select id="categoryFilter" class="category-filter">
+                        <option value="">सभी श्रेणियां</option>
+                        <option value="electronics">इलेक्ट्रॉनिक्स</option>
+                        <option value="fashion">फैशन</option>
+                        <option value="vehicles">वाहन</option>
+                        <option value="real-estate">अचल संपत्ति</option>
+                    </select>
+                    <select id="sortBy" class="sort-filter">
+                        <option value="newest">पहले नए</option>
+                        <option value="oldest">पहले पुराने</option>
+                        <option value="price-low">कीमत: कम से ज्यादा</option>
+                        <option value="price-high">कीमत: ज्यादा से कम</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="ads-table-container">
+                <table class="ads-table" id="adsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>चित्र</th>
+                            <th>शीर्षक</th>
+                            <th>श्रेणी</th>
+                            <th>कीमत</th>
+                            <th>व्यूज</th>
+                            <th>स्थिति</th>
+                            <th>स्थान</th>
+                            <th>विक्रेता</th>
+                            <th>तारीख</th>
+                            <th>कार्रवाइयां</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adsTableBody">
+                        <!-- Ads will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <h3>हटाने की पुष्टि करें</h3>
+            <p id="deleteMessage">क्या आप वाकई इस विज्ञापन को हटाना चाहते हैं?</p>
+            <div class="modal-actions">
+                <button class="btn-danger" id="confirmDeleteBtn">हां, हटाएं</button>
+                <button class="btn-secondary" id="cancelDeleteBtn">रद्द करें</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Item Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content modal-large">
+            <span class="close-modal" onclick="closeEditModal()">&times;</span>
+            <h3>विज्ञापन संपादित करें</h3>
+            <form id="editItemForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editTitle">शीर्षक *</label>
+                        <input type="text" id="editTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategory">श्रेणी *</label>
+                        <select id="editCategory" required>
+                            <option value="electronics">इलेक्ट्रॉनिक्स</option>
+                            <option value="fashion">फैशन</option>
+                            <option value="vehicles">वाहन</option>
+                            <option value="real-estate">अचल संपत्ति</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editPrice">कीमत (₹) *</label>
+                        <input type="number" id="editPrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCondition">स्थिति *</label>
+                        <select id="editCondition" required>
+                            <option value="new">बिल्कुल नया</option>
+                            <option value="like-new">नए जैसा</option>
+                            <option value="good">अच्छा</option>
+                            <option value="fair">ठीक-ठाक</option>
+                            <option value="poor">पुर्जों के लिए</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editSize">आकार / आयाम</label>
+                        <input type="text" id="editSize">
+                    </div>
+                    <div class="form-group">
+                        <label for="editViews">व्यूज *</label>
+                        <input type="number" id="editViews" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDescription">विवरण *</label>
+                    <textarea id="editDescription" rows="4" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editLocation">स्थान *</label>
+                        <input type="text" id="editLocation" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editSeller">विक्रेता *</label>
+                        <input type="text" id="editSeller" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editPhone">फोन *</label>
+                    <input type="tel" id="editPhone" required>
+                </div>
+
+                <input type="hidden" id="editItemId">
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary">परिवर्तन सहेजें</button>
+                    <button type="button" class="btn-secondary" onclick="closeEditModal()">रद्द करें</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="api-client.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

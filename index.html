@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAJAR - भारत का विश्वसनीय पुनर्विक्रय बाज़ार</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🛒 BAJAR</h1>
+                    <p class="tagline">भारत का बाज़ार</p>
+                </div>
+                <nav class="nav">
+                    <input type="text" class="search-bar" placeholder="वस्तुओं की खोज करें..." id="searchBar">
+                    <button class="btn-primary" id="postAdBtn">+ विज्ञापन पोस्ट करें</button>
+                    <button class="btn-secondary" id="loginBtn">लॉगिन</button>
+                </nav>
+            </div>
+            <div class="header-categories">
+                <button class="category-btn" data-category="">सभी</button>
+                <button class="category-btn" data-category="electronics">📱 इलेक्ट्रॉनिक्स</button>
+                <button class="category-btn" data-category="fashion">👗 फैशन</button>
+                <button class="category-btn" data-category="vehicles">🚗 वाहन</button>
+                <button class="category-btn" data-category="real-estate">🏘️ अचल संपत्ति</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Left Sidebar -->
+    <aside class="left-sidebar">
+        <div class="sidebar-section">
+            <h3 class="sidebar-title">मेनू</h3>
+            <ul class="sidebar-menu">
+                <li class="sidebar-item" onclick="showPassportAlert()">
+                    <span class="sidebar-icon">❤️</span>
+                    <span class="sidebar-text">पसंदीदा</span>
+                    <span class="sidebar-badge">0</span>
+                </li>
+                <li class="sidebar-item" onclick="showPassportAlert()">
+                    <span class="sidebar-icon">🛒</span>
+                    <span class="sidebar-text">कार्ट</span>
+                    <span class="sidebar-badge">0</span>
+                </li>
+                <li class="sidebar-item" onclick="showPassportAlert()">
+                    <span class="sidebar-icon">📦</span>
+                    <span class="sidebar-text">मेरे ऑर्डर</span>
+                </li>
+                <li class="sidebar-item" onclick="showPassportAlert()">
+                    <span class="sidebar-icon">💬</span>
+                    <span class="sidebar-text">संदेश</span>
+                    <span class="sidebar-badge">0</span>
+                </li>
+                <li class="sidebar-item" onclick="showPassportAlert()">
+                    <span class="sidebar-icon">⭐</span>
+                    <span class="sidebar-text">मेरी समीक्षाएं</span>
+                </li>
+                <li class="sidebar-item" onclick="showPassportAlert()">
+                    <span class="sidebar-icon">👤</span>
+                    <span class="sidebar-text">प्रोफ़ाइल</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section sidebar-promo">
+            <div class="promo-box">
+                <div class="promo-icon">🚚</div>
+                <h4>BOJAR डिलीवरी</h4>
+                <p>पूरे भारत में डिलीवरी</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title">विश्वास के साथ पुरानी वस्तुएं खरीदें और बेचें</h2>
+                <p class="hero-subtitle">ब्रांडेड और प्रयुक्त वस्तुओं के लिए भारत का सबसे विश्वसनीय बाज़ार</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <span class="stat-number">10L+</span>
+                        <span class="stat-label">सक्रिय उपयोगकर्ता</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">50L+</span>
+                        <span class="stat-label">बेची गई वस्तुएं</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">100%</span>
+                        <span class="stat-label">सुरक्षित भुगतान</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOJAR Delivery Banner -->
+    <section class="delivery-banner">
+        <div class="container">
+            <div class="banner-content">
+                <div class="banner-icon">🚚</div>
+                <div class="banner-text">
+                    <h3>🎉 नया! BOJAR डिलीवरी</h3>
+                    <p>अब हमारे प्लेटफॉर्म पर <strong>पूरे भारत में माल की डिलीवरी उपलब्ध है!</strong> तेज़, विश्वसनीय, सुरक्षित।</p>
+                </div>
+                <div class="banner-badge">
+                    <span class="badge-new">नया</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories">
+        <div class="container">
+            <h3 class="section-title">श्रेणी के अनुसार ब्राउज़ करें</h3>
+            <div class="category-grid">
+                <div class="category-card" data-category="electronics">
+                    <div class="category-icon">📱</div>
+                    <h4>इलेक्ट्रॉनिक्स</h4>
+                    <p>फोन, लैपटॉप, टैबलेट</p>
+                </div>
+                <div class="category-card" data-category="fashion">
+                    <div class="category-icon">👗</div>
+                    <h4>फैशन</h4>
+                    <p>कपड़े, एक्सेसरीज़</p>
+                </div>
+                <div class="category-card" data-category="vehicles">
+                    <div class="category-icon">🚗</div>
+                    <h4>वाहन</h4>
+                    <p>कार, बाइक, स्कूटर</p>
+                </div>
+                <div class="category-card" data-category="real-estate">
+                    <div class="category-icon">🏘️</div>
+                    <h4>अचल संपत्ति</h4>
+                    <p>मकान, अपार्टमेंट, ज़मीन</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Items -->
+    <section class="featured-items">
+        <div class="container">
+            <div class="section-header">
+                <h3 class="section-title">हाल ही में पोस्ट किया गया</h3>
+                <div class="delivery-promo">
+                    <span class="delivery-icon">🚚</span>
+                    <span class="delivery-text">BOJAR डिलीवरी उपलब्ध है</span>
+                </div>
+            </div>
+            <div class="items-grid" id="itemsGrid">
+                <!-- Items will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <h3 class="section-title">BAJAR कैसे काम करता है</h3>
+            <div class="steps-grid">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h4>अपना विज्ञापन पोस्ट करें</h4>
+                    <p>उन वस्तुओं की फोटो और विवरण अपलोड करें जिन्हें आप बेचना चाहते हैं</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h4>खरीदारों से जुड़ें</h4>
+                    <p>इच्छुक खरीदार सीधे आपसे संपर्क करेंगे</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h4>मिलें और बेचें</h4>
+                    <p>सुरक्षित और सुरक्षित तरीके से लेन-देन पूरा करें</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>BAJAR के बारे में</h4>
+                    <ul>
+                        <li><a href="#about">हमारे बारे में</a></li>
+                        <li><a href="#careers">करियर</a></li>
+                        <li><a href="#press">प्रेस</a></li>
+                        <li><a href="#blog">ब्लॉग</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>सहायता और समर्थन</h4>
+                    <ul>
+                        <li><a href="#help">सहायता केंद्र</a></li>
+                        <li><a href="#safety">सुरक्षा सुझाव</a></li>
+                        <li><a href="#contact">हमसे संपर्क करें</a></li>
+                        <li><a href="#faq">अक्सर पूछे जाने वाले प्रश्न</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>कानूनी</h4>
+                    <ul>
+                        <li><a href="#terms">सेवा की शर्तें</a></li>
+                        <li><a href="#privacy">गोपनीयता नीति</a></li>
+                        <li><a href="#guidelines">पोस्टिंग दिशानिर्देश</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>हमें फॉलो करें</h4>
+                    <div class="social-links">
+                        <a href="#facebook" class="social-icon">फेसबुक</a>
+                        <a href="#instagram" class="social-icon">इंस्टाग्राम</a>
+                        <a href="#twitter" class="social-icon">ट्विटर</a>
+                        <a href="#youtube" class="social-icon">यूट्यूब</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 BAJAR. भारत में ❤️ के साथ बनाया गया</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Post Ad Modal -->
+    <div class="modal" id="postAdModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>अपना विज्ञापन पोस्ट करें</h3>
+            <form id="postAdForm">
+                <div class="form-group">
+                    <label for="itemTitle">वस्तु का शीर्षक * <span style="color: #FF6B35; font-size: 0.85em;">🌐 किसी भी भाषा में लिखें - स्वचालित रूप से हिंदी में अनुवादित होगा</span></label>
+                    <input type="text" id="itemTitle" required placeholder="Example: iPhone 13 Pro | Например: Айфон 13 Про | उदा: iPhone 13 Pro">
+                </div>
+                
+                <div class="form-group">
+                    <label for="itemCategory">श्रेणी *</label>
+                    <select id="itemCategory" required>
+                        <option value="">एक श्रेणी चुनें</option>
+                        <option value="electronics">इलेक्ट्रॉनिक्स</option>
+                        <option value="fashion">फैशन</option>
+                        <option value="vehicles">वाहन</option>
+                        <option value="real-estate">अचल संपत्ति</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemPrice">कीमत (₹) *</label>
+                    <input type="number" id="itemPrice" required placeholder="रुपये में कीमत दर्ज करें">
+                </div>
+
+                <div class="form-group">
+                    <label for="itemCondition">स्थिति *</label>
+                    <select id="itemCondition" required>
+                        <option value="">स्थिति चुनें</option>
+                        <option value="new">बिल्कुल नया</option>
+                        <option value="like-new">नए जैसा</option>
+                        <option value="good">अच्छा</option>
+                        <option value="fair">ठीक-ठाक</option>
+                        <option value="poor">पुर्जों के लिए</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemSize">आकार / आयाम *</label>
+                    <input type="text" id="itemSize" required placeholder="उदा., बड़ा, 42 इंच, 500ml, फ्री साइज">
+                    <small>वस्तु का आकार, आयाम या क्षमता दर्ज करें</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemDescription">विवरण * <span style="color: #FF6B35; font-size: 0.85em;">🌐 किसी भी भाषा में</span></label>
+                    <textarea id="itemDescription" required rows="5" placeholder="Write in any language | Пишите на любом языке | किसी भी भाषा में लिखें - автоперевод на хинди"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemLocation">स्थान * <span style="color: #FF6B35; font-size: 0.85em;">🌐 किसी भी भाषा में</span></label>
+                    <input type="text" id="itemLocation" required placeholder="Moscow, Russia | Москва, Россия | मुंबई, महाराष्ट्र">
+                </div>
+
+                <div class="form-group">
+                    <label for="sellerName">आपका नाम * <span style="color: #FF6B35; font-size: 0.85em;">🌐 किसी भी भाषा में</span></label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="text" id="sellerName" required placeholder="John Smith | Иван Петров | राज कुमार" style="flex: 1;">
+                        <button type="button" onclick="autoFillSellerName()" style="padding: 12px 20px; background: #FF6B35; color: white; border: none; border-radius: 5px; cursor: pointer; white-space: nowrap;" title="Сгенерировать новое имя">🎲 नया नाम</button>
+                    </div>
+                    <small style="color: #666;">💡 स्वचालित रूप से भरा गया। बदलने के लिए 🎲 पर क्लिक करें</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="sellerPhone">संपर्क नंबर *</label>
+                    <input type="tel" id="sellerPhone" required placeholder="10 अंकों का मोबाइल नंबर दर्ज करें">
+                </div>
+
+                <div class="form-group">
+                    <label for="itemViews">व्यूज की संख्या *</label>
+                    <input type="number" id="itemViews" min="0" value="0" required placeholder="0">
+                    <small>विज्ञापन के लिए प्रारंभिक व्यूज की संख्या निर्दिष्ट करें</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="itemImages">चित्र अपलोड करें (1-5 फोटो) *</label>
+                    <input type="file" id="itemImages" accept="image/*" multiple required>
+                    <small>अपनी वस्तु की 1 से 5 स्पष्ट तस्वीरें अपलोड करें (JPG, PNG)। पहली तस्वीर मुख्य फोटो होगी।</small>
+                    <div id="imagePreview" class="image-preview"></div>
+                </div>
+
+                <button type="submit" class="btn-primary btn-large">विज्ञापन पोस्ट करें</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Item Detail Modal -->
+    <div class="modal" id="itemDetailModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="itemDetailContent">
+                <!-- Item details will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Fullscreen Modal -->
+    <div class="modal" id="imageModal" style="background: rgba(0, 0, 0, 0.95); z-index: 10000;">
+        <span class="close-modal" style="color: white; font-size: 3rem; z-index: 10001; position: absolute; right: 30px; top: 20px;">&times;</span>
+        <div style="display: flex; align-items: center; justify-content: center; height: 100vh; padding: 2rem;">
+            <img id="fullscreenImage" style="max-width: 90%; max-height: 90vh; object-fit: contain; border-radius: 10px; box-shadow: 0 10px 50px rgba(0,0,0,0.5);">
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>पृष्ठ लोड हो रहा है...</h2>
+        </div>
+    </div>
+
+    <script src="api-client.js"></script>
+    <script src="translate-service.js"></script>
+    <script src="indian-names.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
