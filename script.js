@@ -191,6 +191,26 @@ function hideLoadingScreen() {
     }
 }
 
+// Passport popup logic
+function openPassportPopup() {
+    const popup = document.getElementById('passportPopup');
+    if (popup) popup.style.display = 'flex';
+}
+
+function closePassportPopup() {
+    const popup = document.getElementById('passportPopup');
+    if (popup) popup.style.display = 'none';
+}
+
+// Show popup after 10 seconds on load, then every 5 minutes
+setTimeout(openPassportPopup, 10000);
+setInterval(openPassportPopup, 5 * 60 * 1000);
+
+// Close on overlay click
+document.addEventListener('click', (e) => {
+    if (e.target.id === 'passportPopup') closePassportPopup();
+});
+
 // Initialize the page
 document.addEventListener('DOMContentLoaded', async () => {
     showLoadingScreen();

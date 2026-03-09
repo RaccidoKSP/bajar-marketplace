@@ -37,6 +37,264 @@ body {
     padding: 0 20px;
 }
 
+/* Scrolling Ticker */
+.ticker-wrap {
+    background: linear-gradient(90deg, #FF1744 0%, #FF6B35 50%, #FF1744 100%);
+    color: white;
+    padding: 0.55rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.3px;
+    box-shadow: 0 3px 10px rgba(255,23,68,0.4);
+}
+
+.ticker {
+    display: inline-block;
+    animation: tickerMove 35s linear infinite;
+}
+
+@keyframes tickerMove {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+/* Promo Cards Row */
+.promo-cards-section {
+    background: var(--bg-white);
+    padding: 1.5rem 0;
+    border-bottom: 3px solid #FF6B35;
+}
+
+.promo-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .promo-cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.promo-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: var(--shadow);
+}
+
+.promo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+
+.promo-orange { background: linear-gradient(135deg, #FF6B35, #F7B731); color: white; }
+.promo-green  { background: linear-gradient(135deg, #27AE60, #2ECC71); color: white; }
+.promo-blue   { background: linear-gradient(135deg, #2980B9, #3498DB); color: white; }
+.promo-red    { background: linear-gradient(135deg, #C0392B, #E74C3C); color: white; }
+
+.promo-card-icon { font-size: 2rem; flex-shrink: 0; }
+
+.promo-card-text { display: flex; flex-direction: column; }
+.promo-card-text strong { font-size: 0.95rem; font-weight: 700; }
+.promo-card-text span   { font-size: 0.78rem; opacity: 0.9; }
+
+/* Big Promo Banner */
+.big-promo-banner {
+    background: linear-gradient(135deg, #000080 0%, #4169E1 60%, #FF6B35 100%);
+    padding: 2.5rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.big-promo-banner::after {
+    content: '🇮🇳 🇮🇳 🇮🇳 🇮🇳 🇮🇳 🇮🇳 🇮🇳 🇮🇳';
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+.big-promo-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.big-promo-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    color: white;
+}
+
+.big-promo-emoji { font-size: 4rem; animation: bounce 2s ease-in-out infinite; }
+
+.big-promo-left h2 { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.3rem; }
+.big-promo-left p  { font-size: 1.05rem; opacity: 0.9; }
+.big-promo-left strong { color: var(--gold-color); }
+
+.btn-big-promo {
+    background: var(--gold-color);
+    color: #000080;
+    border: none;
+    padding: 1rem 2.5rem;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s;
+    box-shadow: 0 5px 20px rgba(255,215,0,0.5);
+    animation: pulse 1.8s ease-in-out infinite;
+    white-space: nowrap;
+}
+
+.btn-big-promo:hover { transform: scale(1.07); box-shadow: 0 8px 30px rgba(255,215,0,0.7); }
+
+/* Floating Register Button */
+.floating-register-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: linear-gradient(135deg, #FF6B35, #F7B731);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0.9rem 1.6rem;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 6px 25px rgba(255,107,53,0.55);
+    z-index: 900;
+    animation: floatPulse 2.5s ease-in-out infinite;
+    transition: transform 0.2s;
+}
+
+.floating-register-btn:hover { transform: scale(1.08); }
+
+.floating-btn-icon { font-size: 1.3rem; }
+
+@keyframes floatPulse {
+    0%, 100% { box-shadow: 0 6px 25px rgba(255,107,53,0.55); }
+    50%       { box-shadow: 0 10px 40px rgba(255,107,53,0.85); transform: translateY(-4px); }
+}
+
+/* Passport Popup */
+.passport-popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 99000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.passport-popup {
+    background: white;
+    border-radius: 20px;
+    max-width: 480px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    animation: popupIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popupIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+.passport-popup-top {
+    background: linear-gradient(135deg, #FF6B35 0%, #000080 100%);
+    color: white;
+    padding: 2rem;
+    text-align: center;
+}
+
+.passport-popup-flag { font-size: 3.5rem; display: block; margin-bottom: 0.5rem; }
+.passport-popup-top h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.3rem; }
+.passport-popup-sub { font-size: 0.9rem; opacity: 0.85; }
+
+.passport-popup-body {
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.passport-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.8rem;
+    background: #FFF8F0;
+    border-radius: 10px;
+    border-left: 4px solid #FF6B35;
+}
+
+.passport-step-icon { font-size: 1.8rem; flex-shrink: 0; }
+.passport-step div  { display: flex; flex-direction: column; gap: 0.1rem; }
+.passport-step strong { font-size: 0.95rem; color: #2C3E50; }
+.passport-step span   { font-size: 0.82rem; color: #7F8C8D; }
+
+.passport-popup-actions {
+    padding: 0 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.btn-passport-register {
+    background: linear-gradient(135deg, #FF6B35, #F7B731);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 12px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 5px 15px rgba(255,107,53,0.4);
+}
+
+.btn-passport-register:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,107,53,0.6); }
+
+.btn-passport-later {
+    background: none;
+    border: 2px solid #E0E0E0;
+    color: #7F8C8D;
+    padding: 0.75rem;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-passport-later:hover { border-color: #999; color: #555; }
+
+.passport-popup-note {
+    text-align: center;
+    font-size: 0.78rem;
+    color: #7F8C8D;
+    padding: 0 2rem 1.5rem;
+}
+
 /* Left Sidebar */
 .left-sidebar {
     position: fixed;

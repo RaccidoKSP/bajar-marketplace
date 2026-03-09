@@ -78,6 +78,13 @@
         </div>
     </aside>
 
+    <!-- Scrolling Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span>🔥 आज की सबसे बड़ी डील! &nbsp;|&nbsp; 🎉 10 लाख+ उपयोगकर्ता BAJAR पर! &nbsp;|&nbsp; 🚚 BOJAR डिलीवरी - पूरे भारत में! &nbsp;|&nbsp; ⚡ इलेक्ट्रॉनिक्स पर 50% तक की छूट &nbsp;|&nbsp; 🏆 भारत का नंबर 1 पुनर्विक्रय बाज़ार &nbsp;|&nbsp; 💸 आज बेचें, आज पैसे पाएं! &nbsp;|&nbsp; 🔥 आज की सबसे बड़ी डील! &nbsp;|&nbsp; 🎉 10 लाख+ उपयोगकर्ता BAJAR पर! &nbsp;|&nbsp; 🚚 BOJAR डिलीवरी - पूरे भारत में! &nbsp;|&nbsp; ⚡ इलेक्ट्रॉनिक्स पर 50% तक की छूट &nbsp;|&nbsp; 🏆 भारत का नंबर 1 पुनर्विक्रय बाज़ार &nbsp;|&nbsp; 💸 आज बेचें, आज पैसे पाएं!</span>
+        </div>
+    </div>
+
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
@@ -96,6 +103,42 @@
                     <div class="stat">
                         <span class="stat-number">100%</span>
                         <span class="stat-label">सुरक्षित भुगतान</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promo Cards Row -->
+    <section class="promo-cards-section">
+        <div class="container">
+            <div class="promo-cards-grid">
+                <div class="promo-card promo-orange" onclick="showPassportAlert()">
+                    <div class="promo-card-icon">🛡️</div>
+                    <div class="promo-card-text">
+                        <strong>100% सुरक्षित</strong>
+                        <span>पासपोर्ट सत्यापन</span>
+                    </div>
+                </div>
+                <div class="promo-card promo-green" onclick="showPassportAlert()">
+                    <div class="promo-card-icon">⚡</div>
+                    <div class="promo-card-text">
+                        <strong>तुरंत भुगतान</strong>
+                        <span>24 घंटे में</span>
+                    </div>
+                </div>
+                <div class="promo-card promo-blue" onclick="showPassportAlert()">
+                    <div class="promo-card-icon">🏅</div>
+                    <div class="promo-card-text">
+                        <strong>वेरिफाइड सेलर</strong>
+                        <span>केवल असली लोग</span>
+                    </div>
+                </div>
+                <div class="promo-card promo-red" onclick="showPassportAlert()">
+                    <div class="promo-card-icon">🎁</div>
+                    <div class="promo-card-text">
+                        <strong>बोनस ₹500</strong>
+                        <span>पहली बिक्री पर</span>
                     </div>
                 </div>
             </div>
@@ -159,6 +202,22 @@
             </div>
             <div class="items-grid" id="itemsGrid">
                 <!-- Items will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Big Promo Banner -->
+    <section class="big-promo-banner">
+        <div class="container">
+            <div class="big-promo-inner">
+                <div class="big-promo-left">
+                    <div class="big-promo-emoji">🇮🇳</div>
+                    <div>
+                        <h2>भारत का सबसे भरोसेमंद बाज़ार</h2>
+                        <p>अभी रजिस्टर करें और <strong>₹500 बोनस</strong> पाएं!</p>
+                    </div>
+                </div>
+                <button class="btn-big-promo" onclick="showPassportAlert()">अभी जुड़ें 🚀</button>
             </div>
         </div>
     </section>
@@ -337,6 +396,51 @@
             <img id="fullscreenImage" style="max-width: 90%; max-height: 90vh; object-fit: contain; border-radius: 10px; box-shadow: 0 10px 50px rgba(0,0,0,0.5);">
         </div>
     </div>
+
+    <!-- Passport Registration Popup -->
+    <div id="passportPopup" class="passport-popup-overlay">
+        <div class="passport-popup">
+            <div class="passport-popup-top">
+                <span class="passport-popup-flag">🇮🇳</span>
+                <h2>BAJAR में आपका स्वागत है!</h2>
+                <p class="passport-popup-sub">भारत का सबसे विश्वसनीय पुनर्विक्रय बाज़ार</p>
+            </div>
+            <div class="passport-popup-body">
+                <div class="passport-step">
+                    <span class="passport-step-icon">📘</span>
+                    <div>
+                        <strong>अपना पासपोर्ट तैयार रखें</strong>
+                        <span>सत्यापन के लिए भारतीय पासपोर्ट आवश्यक है</span>
+                    </div>
+                </div>
+                <div class="passport-step">
+                    <span class="passport-step-icon">📸</span>
+                    <div>
+                        <strong>पासपोर्ट की फोटो अपलोड करें</strong>
+                        <span>पहले और दूसरे पृष्ठ की स्पष्ट फोटो</span>
+                    </div>
+                </div>
+                <div class="passport-step">
+                    <span class="passport-step-icon">✅</span>
+                    <div>
+                        <strong>24 घंटे में सत्यापन</strong>
+                        <span>सत्यापन के बाद ₹500 बोनस मिलेगा</span>
+                    </div>
+                </div>
+            </div>
+            <div class="passport-popup-actions">
+                <button class="btn-passport-register" onclick="showPassportAlert(); closePassportPopup()">📘 पासपोर्ट से रजिस्टर करें</button>
+                <button class="btn-passport-later" onclick="closePassportPopup()">बाद में करूंगा</button>
+            </div>
+            <p class="passport-popup-note">🔒 आपका डेटा 100% सुरक्षित है। हम किसी के साथ साझा नहीं करते।</p>
+        </div>
+    </div>
+
+    <!-- Floating Register Button -->
+    <button class="floating-register-btn" onclick="showPassportAlert()">
+        <span class="floating-btn-icon">📘</span>
+        <span class="floating-btn-text">रजिस्टर करें</span>
+    </button>
 
     <!-- Loading Screen -->
     <div id="loadingScreen" class="loading-screen">
