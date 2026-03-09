@@ -3,11 +3,11 @@
 let items = [];
 let filteredItems = [];
 let itemToDelete = null;
+let activeCategory = '';
 
 // DOM Elements
 const adsTableBody = document.getElementById('adsTableBody');
 const adminSearch = document.getElementById('adminSearch');
-const categoryFilter = document.getElementById('categoryFilter');
 const sortBy = document.getElementById('sortBy');
 const clearAllBtn = document.getElementById('clearAllBtn');
 const generateItemsBtn = document.getElementById('generateItemsBtn');
@@ -52,8 +52,17 @@ async function loadItems() {
 // Setup event listeners
 function setupEventListeners() {
     adminSearch.addEventListener('input', handleFilter);
-    categoryFilter.addEventListener('change', handleFilter);
     sortBy.addEventListener('change', handleSort);
+
+    // Category tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activeCategory = btn.dataset.category;
+            handleFilter();
+        });
+    });
     clearAllBtn.addEventListener('click', handleClearAll);
     confirmDeleteBtn.addEventListener('click', confirmDelete);
     cancelDeleteBtn.addEventListener('click', closeModal);
@@ -175,19 +184,19 @@ function formatDate(dateString) {
 // Handle filter
 function handleFilter() {
     const searchTerm = adminSearch.value.toLowerCase();
-    const category = categoryFilter.value;
-    
+
     filteredItems = items.filter(item => {
-        const matchesSearch = item.title.toLowerCase().includes(searchTerm) ||
+        const matchesSearch = !searchTerm ||
+                            item.title.toLowerCase().includes(searchTerm) ||
                             item.description.toLowerCase().includes(searchTerm) ||
                             item.location.toLowerCase().includes(searchTerm) ||
                             item.seller.toLowerCase().includes(searchTerm);
-        
-        const matchesCategory = !category || item.category === category;
-        
+
+        const matchesCategory = !activeCategory || item.category === activeCategory;
+
         return matchesSearch && matchesCategory;
     });
-    
+
     handleSort();
 }
 
@@ -283,15 +292,26 @@ function closeModal() {
 // Update stats
 function updateStats() {
     totalAdsEl.textContent = items.length;
-    
+
     // Count today's ads
     const today = new Date().toISOString().split('T')[0];
     const todayAds = items.filter(item => item.datePosted === today).length;
     todayAdsEl.textContent = todayAds;
-    
+
     // Count unique categories
     const categories = new Set(items.map(item => item.category));
     categoriesCountEl.textContent = categories.size;
+
+    // Update tab counters
+    const counts = { '': items.length };
+    ['electronics', 'fashion', 'vehicles', 'real-estate'].forEach(cat => {
+        counts[cat] = items.filter(i => i.category === cat).length;
+    });
+    document.getElementById('count-all').textContent = counts[''];
+    document.getElementById('count-electronics').textContent = counts['electronics'];
+    document.getElementById('count-fashion').textContent = counts['fashion'];
+    document.getElementById('count-vehicles').textContent = counts['vehicles'];
+    document.getElementById('count-real-estate').textContent = counts['real-estate'];
 }
 
 // Show notification

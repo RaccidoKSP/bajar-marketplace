@@ -45,15 +45,15 @@
             </div>
 
             <div class="admin-controls">
+                <div class="category-tabs">
+                    <button class="tab-btn active" data-category="">🏠 सभी <span class="tab-count" id="count-all">0</span></button>
+                    <button class="tab-btn" data-category="electronics">📱 इलेक्ट्रॉनिक्स <span class="tab-count" id="count-electronics">0</span></button>
+                    <button class="tab-btn" data-category="fashion">👗 फैशन <span class="tab-count" id="count-fashion">0</span></button>
+                    <button class="tab-btn" data-category="vehicles">🚗 वाहन <span class="tab-count" id="count-vehicles">0</span></button>
+                    <button class="tab-btn" data-category="real-estate">🏘️ अचल संपत्ति <span class="tab-count" id="count-real-estate">0</span></button>
+                </div>
                 <div class="search-filter">
                     <input type="text" id="adminSearch" class="admin-search" placeholder="🔍 विज्ञापनों में खोजें...">
-                    <select id="categoryFilter" class="category-filter">
-                        <option value="">सभी श्रेणियां</option>
-                        <option value="electronics">इलेक्ट्रॉनिक्स</option>
-                        <option value="fashion">फैशन</option>
-                        <option value="vehicles">वाहन</option>
-                        <option value="real-estate">अचल संपत्ति</option>
-                    </select>
                     <select id="sortBy" class="sort-filter">
                         <option value="newest">पहले नए</option>
                         <option value="oldest">पहले पुराने</option>
