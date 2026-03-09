@@ -11,8 +11,8 @@ uploads/*
 .env.local
 .env.production
 
-# Database (for production use real DB)
-database.json
+# Database - included for initial data seeding
+# database.json
 
 # Logs
 *.log
