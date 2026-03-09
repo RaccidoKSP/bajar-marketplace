@@ -10,12 +10,12 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Configure upload settings
-const UPLOAD_DIR = process.env.UPLOAD_DIR || 'uploads';
+const UPLOAD_DIR = path.join(__dirname, process.env.UPLOAD_DIR || 'uploads');
 const MAX_FILE_SIZE = parseInt(process.env.MAX_FILE_SIZE) || 10 * 1024 * 1024; // 10MB default
 const MAX_FILES = parseInt(process.env.MAX_FILES) || 5;
 
 // Database file path
-const DB_FILE = process.env.DB_FILE || 'database.json';
+const DB_FILE = path.join(__dirname, process.env.DB_FILE || 'database.json');
 
 // Ensure uploads directory exists
 if (!fs.existsSync(UPLOAD_DIR)) {
@@ -33,7 +33,7 @@ app.use(express.static(__dirname));
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, UPLOAD_DIR + '/');
+        cb(null, UPLOAD_DIR);
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
