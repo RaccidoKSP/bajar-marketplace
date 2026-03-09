@@ -10,14 +10,17 @@ COPY package*.json ./
 # Устанавливаем зависимости
 RUN npm ci --only=production
 
-# Копируем остальные файлы приложения
+# Копируем все файлы приложения (включая database.json и uploads как seed-данные)
 COPY . .
 
-# Убеждаемся что папка uploads скопирована и имеет правильные права
-RUN chmod 755 uploads || mkdir -p uploads && chmod 755 uploads
+# Делаем скрипт запуска исполняемым
+RUN chmod +x /app/start.sh
+
+# Создаем директорию для данных (fallback если volume не подключен)
+RUN mkdir -p /data/uploads
 
 # Открываем порт
 EXPOSE 3000
 
-# Запускаем приложение
-CMD ["node", "server.js"]
+# Запускаем через скрипт инициализации
+CMD ["sh", "/app/start.sh"]
