@@ -105,12 +105,15 @@
     <div class="modal" id="editModal">
         <div class="modal-content modal-large">
             <span class="close-modal" onclick="closeEditModal()">&times;</span>
-            <h3>विज्ञापन संपादित करें</h3>
+            <h3>✏️ विज्ञापन संपादित करें</h3>
             <form id="editItemForm">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="editTitle">शीर्षक *</label>
-                        <input type="text" id="editTitle" required>
+                        <div class="input-with-btn">
+                            <input type="text" id="editTitle" required>
+                            <button type="button" class="btn-translate-field" onclick="translateField('editTitle', this)">🌐</button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="editCategory">श्रेणी *</label>
@@ -153,17 +156,26 @@
 
                 <div class="form-group">
                     <label for="editDescription">विवरण *</label>
-                    <textarea id="editDescription" rows="4" required></textarea>
+                    <div class="input-with-btn textarea-with-btn">
+                        <textarea id="editDescription" rows="4" required></textarea>
+                        <button type="button" class="btn-translate-field" onclick="translateField('editDescription', this)">🌐</button>
+                    </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="editLocation">स्थान *</label>
-                        <input type="text" id="editLocation" required>
+                        <div class="input-with-btn">
+                            <input type="text" id="editLocation" required>
+                            <button type="button" class="btn-translate-field" onclick="translateField('editLocation', this)">🌐</button>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="editSeller">विक्रेता *</label>
-                        <input type="text" id="editSeller" required>
+                        <div class="input-with-btn">
+                            <input type="text" id="editSeller" required>
+                            <button type="button" class="btn-translate-field" onclick="translateField('editSeller', this)">🌐</button>
+                        </div>
                     </div>
                 </div>
 
@@ -176,7 +188,7 @@
 
                 <div class="modal-actions">
                     <button type="submit" class="btn-primary">परिवर्तन सहेजें</button>
-                    <button type="button" class="btn-secondary" onclick="closeEditModal()">रद्द करें</button>
+                    <button type="button" class="btn-secondary btn-secondary-dark" onclick="closeEditModal()">रद्द करें</button>
                 </div>
             </form>
         </div>
@@ -197,7 +209,7 @@
                         <label for="createTitle">शीर्षक *</label>
                         <div class="input-with-btn">
                             <input type="text" id="createTitle" required placeholder="Например: iPhone 13 Pro / Айфон 13">
-                            <button type="button" class="btn-translate-field" onclick="translateField('createTitle')">🌐</button>
+                            <button type="button" class="btn-translate-field" onclick="translateField('createTitle', this)">🌐</button>
                         </div>
                     </div>
                     <div class="form-group">
@@ -244,7 +256,7 @@
                     <label for="createDescription">विवरण *</label>
                     <div class="input-with-btn textarea-with-btn">
                         <textarea id="createDescription" rows="4" required placeholder="Описание товара на любом языке..."></textarea>
-                        <button type="button" class="btn-translate-field" onclick="translateField('createDescription')">🌐</button>
+                        <button type="button" class="btn-translate-field" onclick="translateField('createDescription', this)">🌐</button>
                     </div>
                 </div>
 
@@ -253,14 +265,14 @@
                         <label for="createLocation">स्थान *</label>
                         <div class="input-with-btn">
                             <input type="text" id="createLocation" required placeholder="Москва / Mumbai">
-                            <button type="button" class="btn-translate-field" onclick="translateField('createLocation')">🌐</button>
+                            <button type="button" class="btn-translate-field" onclick="translateField('createLocation', this)">🌐</button>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="createSeller">विक्रेता *</label>
                         <div class="input-with-btn">
                             <input type="text" id="createSeller" required placeholder="Иван Петров / John Smith">
-                            <button type="button" class="btn-translate-field" onclick="translateField('createSeller')">🌐</button>
+                            <button type="button" class="btn-translate-field" onclick="translateField('createSeller', this)">🌐</button>
                             <button type="button" class="btn-random-name" onclick="fillRandomName()" title="Случайное индийское имя">🎲</button>
                         </div>
                     </div>

@@ -441,16 +441,15 @@ function fillRandomName() {
 }
 
 // Translate a single field to Hindi
-async function translateField(fieldId) {
+async function translateField(fieldId, btn) {
     const el = document.getElementById(fieldId);
     const text = el.value.trim();
     if (!text) return;
 
-    const btn = el.parentElement.querySelector('.btn-translate-field');
     const original = btn.textContent;
     btn.textContent = '⏳';
     btn.disabled = true;
-    el.style.opacity = '0.5';
+    el.disabled = true;
 
     try {
         const translated = await TranslationService.translateToHindi(text);
@@ -462,25 +461,34 @@ async function translateField(fieldId) {
     } finally {
         btn.textContent = original;
         btn.disabled = false;
-        el.style.opacity = '1';
+        el.disabled = false;
     }
 }
 
 // Translate all text fields at once
 async function translateAllFields() {
-    const btn = document.getElementById('translateAllBtn');
-    btn.textContent = '⏳ अनुवाद हो रहा है...';
-    btn.disabled = true;
+    const allBtn = document.getElementById('translateAllBtn');
+    allBtn.textContent = '⏳ अनुवाद हो रहा है...';
+    allBtn.disabled = true;
 
     const fields = ['createTitle', 'createDescription', 'createLocation', 'createSeller'];
     try {
-        await Promise.all(fields.map(id => translateField(id)));
+        await Promise.all(fields.map(id => {
+            const el = document.getElementById(id);
+            const text = el.value.trim();
+            if (!text) return Promise.resolve();
+            return TranslationService.translateToHindi(text).then(translated => {
+                el.value = translated;
+                el.style.backgroundColor = '#e8f5e9';
+                setTimeout(() => el.style.backgroundColor = '', 1000);
+            });
+        }));
         showNotification('सभी फ़ील्ड का अनुवाद हो गया! ✅', 'success');
     } catch (e) {
         showNotification('अनुवाद त्रुटि', 'error');
     } finally {
-        btn.textContent = '🌐 सभी को हिंदी में अनुवाद करें';
-        btn.disabled = false;
+        allBtn.textContent = '🌐 सभी को हिंदी में अनुवाद करें';
+        allBtn.disabled = false;
     }
 }
 
