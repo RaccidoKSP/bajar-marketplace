@@ -145,19 +145,43 @@ app.get('/api/items/:id', (req, res) => {
     }
 });
 
+// Upload image to catbox.moe for permanent hosting
+async function uploadToCatbox(filePath) {
+    const FormData = require('form-data');
+    const axios = require('axios');
+    const form = new FormData();
+    form.append('reqtype', 'fileupload');
+    form.append('fileToUpload', fs.createReadStream(filePath));
+    const response = await axios.post('https://catbox.moe/user/api.php', form, {
+        headers: form.getHeaders(),
+        timeout: 15000
+    });
+    const url = response.data.trim();
+    if (!url.startsWith('https://')) throw new Error('Invalid catbox response: ' + url);
+    return url;
+}
+
 // Upload images (multiple files)
-app.post('/api/upload', upload.array('images', MAX_FILES), (req, res) => {
+app.post('/api/upload', upload.array('images', MAX_FILES), async (req, res) => {
     try {
         if (!req.files || req.files.length === 0) {
             return res.status(400).json({ success: false, error: 'No files uploaded' });
         }
-        
-        const fileUrls = req.files.map(file => {
-            return `/uploads/${file.filename}`;
-        });
-        
-        res.json({ 
-            success: true, 
+
+        const fileUrls = await Promise.all(req.files.map(async (file) => {
+            const localUrl = `/uploads/${file.filename}`;
+            try {
+                const catboxUrl = await uploadToCatbox(file.path);
+                console.log(`Uploaded to catbox: ${catboxUrl}`);
+                return catboxUrl;
+            } catch (err) {
+                console.error('Catbox upload failed, using local URL:', err.message);
+                return localUrl;
+            }
+        }));
+
+        res.json({
+            success: true,
             message: 'Files uploaded successfully',
             files: fileUrls
         });
